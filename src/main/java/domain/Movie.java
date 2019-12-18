@@ -13,10 +13,18 @@ public class Movie {
 
     private List<PlaySchedule> playSchedules = new ArrayList<>();
 
+    public List<PlaySchedule> getPlaySchedules() {
+        return playSchedules;
+    }
+
     public Movie(int id, String name, int price) {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
     }
 
     void addPlaySchedule(PlaySchedule playSchedule) {
@@ -29,6 +37,10 @@ public class Movie {
             sumOfSchedule += i.getCapacity();
         }
         return sumOfSchedule != ZERO;
+    }
+
+    public boolean canReserve(int time, int howMany){
+        return getPlaySchedules().get(time).getCapacity() >= howMany;
     }
 
     @Override
