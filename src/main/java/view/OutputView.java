@@ -10,4 +10,7 @@ public class OutputView {
             System.out.println(movie);
         }
     }
+    public static void printSelectedMovie(List<Movie> movies, int number){
+        System.out.println(movies.get(number).toString());
+    }
 }

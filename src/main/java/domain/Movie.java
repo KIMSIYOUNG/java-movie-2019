@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Movie {
     private static final char NEW_LINE = '\n';
+    private static final int ZERO = 0;
 
     private final int id;
     private final String name;
@@ -20,6 +21,14 @@ public class Movie {
 
     void addPlaySchedule(PlaySchedule playSchedule) {
         playSchedules.add(playSchedule);
+    }
+
+    public boolean canReserve(){
+        int sumOfSchedule = ZERO;
+        for (PlaySchedule i : playSchedules){
+            sumOfSchedule += i.getCapacity();
+        }
+        return sumOfSchedule != ZERO;
     }
 
     @Override
