@@ -20,4 +20,23 @@ public class InputView {
         this.movieList = movieList;
     }
 
+    public int inputMovieId() throws IOException {
+        System.out.println("## 예약할 영화를 선택하세요.");
+        try {
+            return checkCanReserve(Integer.parseInt(BR.readLine().trim()));
+        } catch (NumberFormatException e) {
+            System.out.println(ERROR_FORMAT);
+            return inputMovieId();
+        }
+    }
+
+    private int checkCanReserve(int movieNumber) throws IOException {
+        if(movieNumber > ZERO && movieNumber <= movieList.size()
+                && movieList.get(movieNumber).canReserve()){
+            return movieNumber;
+        }
+        System.out.println(ERROR_NUMBER_INPUT);
+        return inputMovieId();
+    }
+
 }
