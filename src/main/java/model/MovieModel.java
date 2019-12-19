@@ -5,18 +5,19 @@ import java.util.List;
 
 import domain.Movie;
 import domain.User;
-import utils.MoreOrStop;
 import view.InputView;
 import view.OutputView;
 
 public class MovieModel {
+    private static final String START_PAYMENT = "결제를 시작합니다. 예약목록은 아래에 표기됩니다.";
+    private static final double[] PAYMENT_METHOD = new double[]{0.95,0.97};
     private static List<Movie> movies;
     private static InputView inputView;
     private static User user;
 
     public MovieModel(List<Movie> movies) {
-        user = new User();
         this.movies = movies;
+        user = new User();
         inputView = new InputView(movies);
     }
 
@@ -24,6 +25,14 @@ public class MovieModel {
         do {
             inputAndAddToUser();
         } while (!inputView.moreOrStop());
+        startPayment();
+    }
+
+    private void startPayment() {
+        System.out.println(START_PAYMENT);
+        System.out.println(user.toString());
+        int totalPayment = user.howMuchShouldPay();
+        System.out.println(totalPayment);
     }
 
     private void inputAndAddToUser() throws IOException {
@@ -31,9 +40,9 @@ public class MovieModel {
         OutputView.printSelectedMovie(movies, movieId);
         int movieTime = inputMovieTime(movieId);
         int howMany = inputView.inputHowManyPeople(movieId, movieTime);
-        for(int i =0; i< howMany; i++){
-            user.addMovie(getMovieById(movieId),movieTime);
-        }
+        Movie movieById = getMovieById(movieId);
+        movieById.reserve(movieById.getPlaySchedules().get(movieTime),howMany);
+        user.addMovie(movieById,movieById.getPlaySchedules().get(movieTime),howMany);
     }
 
     private int inputMovieTime(int movieId) throws IOException {
@@ -53,15 +62,16 @@ public class MovieModel {
 
     private Movie getMovieById(int movieId) {
         for(Movie movie : movies){
-            movieIdCompareToUserInput(movieId, movie);
+            if(movie.getId() == movieId)
+                return movie;
         }
-        return null;
+        return movies.get(movieId);
     }
 
-    private Movie movieIdCompareToUserInput(int movieId, Movie movie) {
-        if(movie.getId()==movieId){
-            return movie;
-        }
-        return null;
-    }
+//    private Movie movieIdCompareToUserInput(int movieId, Movie movie) {
+//        if(movie.getId()==movieId){
+//            return movie;
+//        }
+//        return null;
+//    }
 }

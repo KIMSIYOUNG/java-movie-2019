@@ -1,17 +1,29 @@
 package domain;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User {
-    private static Map<Movie, PlaySchedule> movieAndSchedules = new HashMap<>();
+    List<ReservedMovie> reservedMovies = new ArrayList<>();
 
-    public Map<Movie, PlaySchedule> getMovieAndSchedules() {
-        return movieAndSchedules;
+    public void addMovie(Movie movie, PlaySchedule playSchedule, int howMany){
+        reservedMovies.add(new ReservedMovie(movie,playSchedule,howMany));
     }
 
-    public static void addMovie(Movie movie, int time){
-        movieAndSchedules.put(movie,movie.getPlaySchedules().get(time));
+    public int howMuchShouldPay(){
+        int totalMoney = 0;
+        for (ReservedMovie reservedMovie : reservedMovies){
+            totalMoney += reservedMovie.sumOfPayment();
+        }
+        return totalMoney;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(ReservedMovie reservedMovie : reservedMovies){
+            sb.append(reservedMovie.toString());
+        }
+        return sb.toString();
+    }
 }

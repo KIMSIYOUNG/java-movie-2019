@@ -12,7 +12,6 @@ public class InputView {
     private static final BufferedReader BR = new BufferedReader(new InputStreamReader(System.in));
     private static final String ERROR_FORMAT = "잘못된 입력입니다. 다시 입력해주세요.";
     private static final String ERROR_NUMBER_INPUT = "잘못된 수를 입력하셨습니다. 다시 입력해주세요";
-    private static final int ZERO = 0;
     private static final String INPUT_MOVIE_TIME = "예매할 시간표를 선택하세요. (위에서부터 1번)";
     private static final String ERROR_NO_SEATS = "그 시간은 이미 마감되었습니다. 다른 시간대를 선택해주세요.";
     private static final String INPUT_HOW_MANY_PEOPLE = "예약할 인원을 입력하세요.";
@@ -87,16 +86,11 @@ public class InputView {
 
     private Movie getMovieById(int movieId) {
         for(Movie movie : movieList){
-            movieIdCompareToUserInput(movieId, movie);
+            if(movie.getId()==movieId){
+                return movie;
+            }
         }
-        return null;
-    }
-
-    private Movie movieIdCompareToUserInput(int movieId, Movie movie) {
-        if(movie.getId()==movieId){
-            return movie;
-        }
-        return null;
+        return movieList.get(0);
     }
 
     public boolean moreOrStop() throws IOException {
@@ -118,5 +112,4 @@ public class InputView {
         System.out.println(ERROR_FORMAT);
         return moreOrStop();
     }
-
 }

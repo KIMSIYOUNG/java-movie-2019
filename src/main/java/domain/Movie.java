@@ -10,11 +10,25 @@ public class Movie {
     private final int id;
     private final String name;
     private final int price;
+    private int totalBuyNumber = 0;
 
     private List<PlaySchedule> playSchedules = new ArrayList<>();
 
     public List<PlaySchedule> getPlaySchedules() {
         return playSchedules;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void reserve(PlaySchedule playSchedule, int howMany){
+        playSchedule.decreaseReservedCapacity(howMany);
+        totalBuyNumber += howMany;
+    }
+
+    public int getTotalBuyNumber() {
+        return totalBuyNumber;
     }
 
     public Movie(int id, String name, int price) {
@@ -31,14 +45,6 @@ public class Movie {
         playSchedules.add(playSchedule);
     }
 
-    public boolean canReserve(){
-        int sumOfSchedule = ZERO;
-        for (PlaySchedule i : playSchedules){
-            sumOfSchedule += i.getCapacity();
-        }
-        return sumOfSchedule != ZERO;
-    }
-
     public boolean canReserve(int time, int howMany){
         return getPlaySchedules().get(time).getCapacity() >= howMany;
     }
@@ -52,4 +58,9 @@ public class Movie {
         return id + " - " + name + ", " + price + "원" + NEW_LINE
                 + sb.toString();
     }
+
+    public String movieInfo(){
+        return id + "-" + name + ", " + price + "원" +NEW_LINE;
+    }
+
 }
